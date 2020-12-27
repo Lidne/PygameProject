@@ -1,25 +1,26 @@
 import pygame
+from load_image import load_image
+
+FPS = 60
+
+pygame.init()
+screen = pygame.display.set_mode((1, 1))
 
 
-class Car:
-    def __init__(self, pos_x: float, pos_y: float, v_x: int, v_y: int):
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-        self.v_x = v_x
-        self.v_y = v_y
+class Car(pygame.sprite.Sprite):
+    image = load_image('car.png')
+    image = pygame.transform.scale(image, (70, 50))
+    image = pygame.transform.rotate(image, 90)
+    # Пока что используем эту картинку для разработки
+    # Рисовать позже будем
 
-    def move_up(self, fps):
-        self.pos_y -= self.v_y / fps
+    def __init__(self, pos_x, pos_y, *group):
+        super().__init__(*group)
+        self.image = Car.image
+        self.rect = self.image.get_rect()
+        self.rect.x = pos_x
+        self.rect.y = pos_y
+        self.v = 150
 
-    def move_down(self, fps):
-        self.pos_y += self.v_y / fps
-
-    def move_left(self, fps):
-        self.pos_x -= self.v_x / fps
-
-    def move_right(self, fps):
-        self.pos_x += self.v_x / fps
-
-    def render(self, screen):
-        pygame.draw.rect(screen, (255, 255, 255),
-                         (int(self.pos_x), int(self.pos_y), 50, 70))
+    def update(self, *args):
+        self.rect = self.rect.move(args[0], args[1])

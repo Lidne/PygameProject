@@ -1,15 +1,24 @@
-class RoadBlock:
-    def __init__(self, pos_x: float, pos_y: float, objects: list):
-        self.pos_y = pos_y
-        self.objects = objects
-        # Начало координат всех обьектов отсчитывается от верхнего левого края блока дороги (должно)
+import pygame
+from load_image import load_image
+
+FPS = 60
+
+
+class RoadBlock(pygame.sprite.Sprite):
+    image = load_image('road.png')
+
+    def __init__(self, x, y, *group):
+        super().__init__(*group)
+        self.image = RoadBlock.image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.objects = pygame.sprite.Group()
 
     def app_object(self, obj):
-        self.objects.append(obj)
+        self.objects.add(obj)
 
-    def move(self, fps):
-        self.pos_y += 40 / fps
-
-    def render(self):
-        for i in self.objects:
-            pass
+    def update(self):
+        self.rect = self.rect.move(0, 1)
+        for obj in self.objects:
+            obj.rect = obj.rect.move(0, 1)
