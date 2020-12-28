@@ -15,10 +15,9 @@ class RoadBlock(pygame.sprite.Sprite):
         self.rect.y = y
         self.objects = pygame.sprite.Group()
 
-    def app_object(self, obj):
+    def add_object(self, obj):
         self.objects.add(obj)
 
     def update(self):
         self.rect = self.rect.move(0, 1)
-        for obj in self.objects:
-            obj.rect = obj.rect.move(0, 1)
+        self.objects.update()
