@@ -1,11 +1,14 @@
 import pygame
+import os
 from car import Car
 from road import RoadBlock
 from obstacles import Obstacle
+from start_screen import start_screen
 
 # Понять почему это окно съезжает в угол
 
 if __name__ == '__main__':
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.init()
     size = width, height = 620, 580
     screen = pygame.display.set_mode(size)
@@ -15,7 +18,9 @@ if __name__ == '__main__':
     all_sprites = pygame.sprite.Group()
     car_group = pygame.sprite.Group()
     road_blocks = pygame.sprite.Group()
-    car = Car(100, 150, car_group, all_sprites)
+    car_image = start_screen(screen)
+    car = Car((155, 310), car_image, car_group)
+
     for i in range(-580, 1160, 580):
         RoadBlock(0, i, all_sprites, road_blocks)
         print(i)
@@ -26,7 +31,6 @@ if __name__ == '__main__':
 
     fps = 60
     running = True
-
     moving_left = False
     moving_right = False
     moving_up = False
