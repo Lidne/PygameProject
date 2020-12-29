@@ -9,8 +9,6 @@ screen = pygame.display.set_mode((1, 1))
 
 class Car(pygame.sprite.Sprite):
     image = load_image('car.png')
-    image = pygame.transform.scale(image, (70, 50))
-    image = pygame.transform.rotate(image, 90)
     # Пока что используем эту картинку для разработки
     # Рисовать позже будем
 
