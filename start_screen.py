@@ -11,19 +11,26 @@ clock = pygame.time.Clock()
 
 
 def terminate():
+    """Функция сворачивает всю игру"""
     pygame.quit()
     sys.exit()
 
 
 def start_screen(screen):
+    # Размеры переданного экрана
     size = width, height = screen.get_rect().w, screen.get_rect().h
     intro_text = ["2D Гонки", "",
                   "Выберите машину"]
 
+    # Добавляем картинку фона
     fon = pygame.transform.scale(load_image('fon.jpg'), (width, height))
+    # Добавляем её на экран
     screen.blit(fon, (0, 0))
+    # Создаём экземпляр шрифта
     font = pygame.font.Font(None, 30)
-    text_coord = 50
+    text_coord = 50  # Начальная высота надписи
+    # Рендерим текст стартового экрана построчно (из-за особенностей pygame)
+    # тут я сам не до конца понимаю, поэтому лучше не трогать
     for line in intro_text:
         string_rendered = font.render(line, 1, (255, 255, 255))
         intro_rect = string_rendered.get_rect()
@@ -33,6 +40,7 @@ def start_screen(screen):
         text_coord += intro_rect.height
         fon.blit(string_rendered, intro_rect)
 
+    # Создаём спрайты машин и кнопки
     car_sprites = pygame.sprite.Group()
     buttons = pygame.sprite.Group()
     btn = Button((200, 400), 'start_button.png', buttons)
@@ -41,7 +49,7 @@ def start_screen(screen):
         Car((80 + i * 130, 200), load_image(f'car{i}.png'), car_sprites)
 
     selected_car = None
-    selection_rect = pygame.Rect(-10, -10, 1, 1)
+    selection_rect = pygame.Rect(-10, -10, 1, 1)  # Прямоугольник подсвечивающий выбранную машинку
 
     while True:
         screen.blit(fon, (0, 0))
@@ -50,9 +58,11 @@ def start_screen(screen):
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for car in car_sprites:
+                    # Проверяем на какую машину нажали мышкой и сохраняем выбор
                     if car.rect.collidepoint(event.pos):
                         selected_car = car
                         selection_rect = selected_car.rect
+                # Если нажали кнопку и машина выбрана, то возвращаем выбранную машину и начинаем игру
                 if btn.button_pressed(event.pos) and selected_car is not None:
                     return selected_car.image
 
