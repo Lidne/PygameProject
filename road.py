@@ -22,8 +22,8 @@ class RoadBlock(pygame.sprite.Sprite):
 
     def update(self):
         """Функция обновляет позицию блока дороги"""
-        self.rect = self.rect.move(0, 2)
-        self.objects.update(2)
+        self.rect = self.rect.move(0, 3)
+        self.objects.update(3)
 
     def is_viewing(self):
         """Функция проверяет не выходит ли блок за границы экрана"""

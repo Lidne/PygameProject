@@ -16,7 +16,7 @@ class Car(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = cords[0]
         self.rect.y = cords[1]
-        self.v = 150  # Скорость машинки
+        self.v = 170  # Скорость машинки
 
     def update(self, *args):
         """Функция обновляет позицию машинки"""
