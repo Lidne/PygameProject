@@ -1,5 +1,7 @@
 import pygame
+import random
 from load_image import load_image
+from obstacles import WeakObstacle
 
 FPS = 60
 
@@ -16,9 +18,10 @@ class RoadBlock(pygame.sprite.Sprite):
         self.rect.y = y
         self.objects = pygame.sprite.Group()  # Группа спрайтов для объектов на блоке дороги
 
-    def add_object(self, obj):
+    def add_object(self):
         """Фугкция добавляет объект на блок дороги"""
-        self.objects.add(obj)
+        # eval(f"{random.choice(('Weak', 'Strong'))}Obstacle('container.png', self.rect, self.objects)")
+        WeakObstacle(self.rect, self.objects)
 
     def update(self):
         """Функция обновляет позицию блока дороги"""

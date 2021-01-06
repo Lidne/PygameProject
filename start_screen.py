@@ -22,8 +22,8 @@ def start_screen(screen):
     intro_text = ["2D Гонки", "",
                   "Выберите машину"]
 
-    # Добавляем картинку фона
-    fon = pygame.transform.scale(load_image('fon.jpg'), (width, height))
+    # Добавляем картинку фона (я заменил на бесплатную картинку)
+    fon = pygame.transform.scale(load_image('fon1.jpg'), (width, height))
     # Добавляем её на экран
     screen.blit(fon, (0, 0))
     # Создаём экземпляр шрифта
@@ -32,7 +32,7 @@ def start_screen(screen):
     # Рендерим текст стартового экрана построчно (из-за особенностей pygame)
     # тут я сам не до конца понимаю, поэтому лучше не трогать
     for line in intro_text:
-        string_rendered = font.render(line, 1, (255, 255, 255))
+        string_rendered = font.render(line, 1, (0, 0, 0))
         intro_rect = string_rendered.get_rect()
         text_coord += 10
         intro_rect.top = text_coord
@@ -66,7 +66,7 @@ def start_screen(screen):
                 if btn.button_pressed(event.pos) and selected_car is not None:
                     return selected_car.image
 
-        pygame.draw.rect(screen, (255, 255, 255), selection_rect)
+        pygame.draw.rect(screen, (0, 0, 0), selection_rect)
         car_sprites.draw(screen)
         buttons.draw(screen)
         pygame.display.flip()
