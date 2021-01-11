@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 
+# Функция для загрузки спрайтов в pygame (НЕ ТРОГАТЬ!!)
 
 
 def load_image(name, colorkey=None):
