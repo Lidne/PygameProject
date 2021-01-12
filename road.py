@@ -3,8 +3,6 @@ import random
 from functions import load_image
 from obstacles import WeakObstacle, StrongObstacle, Bonus
 
-FPS = 60
-
 pygame.init()
 screen = pygame.display.set_mode((620, 580))
 
@@ -26,7 +24,7 @@ class RoadBlock(pygame.sprite.Sprite):
     def add_object(self, weak_obst, strong_obst, bonuses):
         """Функция добавляет объект на блок дороги"""
         eval("{0}Obstacle(self.rect, self.objects, {1})".format(
-             *random.choice([('Weak', 'weak_obst'), ('Strong', 'strong_obst')])))
+            *random.choice([('Weak', 'weak_obst'), ('Strong', 'strong_obst')])))
         ran = random.choice([0, 0, 0, 0, 0, 1])
         if ran:
             Bonus(self.rect, self.objects, bonuses)

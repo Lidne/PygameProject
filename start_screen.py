@@ -1,6 +1,5 @@
-import sys
 import pygame
-from functions import load_image
+from functions import load_image, terminate
 from car import Car
 from button import Button
 
@@ -8,12 +7,6 @@ FPS = 50
 
 pygame.init()
 clock = pygame.time.Clock()
-
-
-def terminate():
-    """Функция сворачивает всю игру"""
-    pygame.quit()
-    sys.exit()
 
 
 def start_screen(screen):
@@ -76,7 +69,7 @@ def start_screen(screen):
 def gameover_screen(screen):
     # Размеры переданного экрана
     size = width, height = screen.get_rect().w, screen.get_rect().h
-    intro_text = ["Game over", "", "Игра окончена"
+    intro_text = ["Game over", "", "Игра окончена",
                   "Нажмите любую кнопку чтобы продолжить",
                   "Esc чтобы выйти"]
     image = load_image('gameover.jpg')
@@ -98,7 +91,7 @@ def gameover_screen(screen):
             if event.type == pygame.QUIT:
                 terminate()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    return
+                return event.key != pygame.K_ESCAPE
+
         screen.blit(image, (0, 0))
         pygame.display.flip()

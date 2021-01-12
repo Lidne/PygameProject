@@ -1,14 +1,7 @@
-import sys
 import pygame
-from functions import load_image
+from functions import load_image, terminate
 
 pygame.init()
-
-
-def terminate():
-    """Функция сворачивает всю игру"""
-    pygame.quit()
-    sys.exit()
 
 
 def pause(screen):

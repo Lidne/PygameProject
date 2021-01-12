@@ -2,10 +2,17 @@ import os
 import sys
 import pygame
 
-# Функция для загрузки спрайтов в pygame (НЕ ТРОГАТЬ!!)
+
+def terminate(record=None):
+    """Функция сворачивает всю игру"""
+    if record is not None:
+        write_record('data/record.txt', record)
+    pygame.quit()
+    sys.exit()
 
 
 def load_image(name, colorkey=None):
+    """Функция возвращает полный путь указанной картинки"""
     fullname = os.path.join('data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
@@ -23,13 +30,16 @@ def load_image(name, colorkey=None):
 
 
 def read_record(filename, coding='utf8'):
+    """Функция возвращает значение рекорда из файла"""
     with open(filename, encoding=coding, mode='r') as file:
         record = file.read().strip()
-        if not record.isdigit():
-            return None
     return int(record)
 
 
 def write_record(filename, record, coding='utf-8'):
+    """Функция сохраняет значение рекорда в файл"""
     with open(filename, encoding=coding, mode='w') as file:
-        file.write(record)
+        if record is None:
+            file.write('0')
+        else:
+            file.write(str(int(record)))
