@@ -1,8 +1,8 @@
 import pygame
 from car import Car
 from road import RoadBlock
-from start_screen import start_screen
-from load_image import load_image
+from start_screen import start_screen, gameover_screen
+from functions import load_image, read_record, write_record
 
 if __name__ == '__main__':
     # Инициализация pygame и окна
@@ -10,24 +10,27 @@ if __name__ == '__main__':
     size = width, height = 620, 580
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Гонки 2D')
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock()  # Инициализация "часов" для работы со временем
     health = 3
     event1 = pygame.USEREVENT + 1 
-    pygame.time.set_timer(event1, 3000)
-    HP = load_image('Item 3-1.png.png')  # Инициализация "часов" для работы со временем
+    pygame.time.set_timer(event1, 6000)
+    HP = load_image('heart.png')
 
     # Инициализируем группы спрайтов qwer
     all_sprites = pygame.sprite.Group()
     car_group = pygame.sprite.Group()
     road_blocks = pygame.sprite.Group()
-    obstacles = pygame.sprite.Group()
+    weak_obst = pygame.sprite.Group()
+    strong_obst = pygame.sprite.Group()
+    bonuses = pygame.sprite.Group()
     car_image = start_screen(screen)
     car = Car((141, 310), car_image, car_group)
 
     # Создаём первых 2 блока дороги
     [RoadBlock(0, i, all_sprites, road_blocks) for i in range(-580, 1, 580)]
 
-    fps = 60
+    record = read_record('data/record.txt')
+    fps = 57  # 57 кадров в секунду для более стабильной отрисовки
     game_is_playing = True
     running = True
     moving_left = False
@@ -37,7 +40,6 @@ if __name__ == '__main__':
 
     while running:
         while game_is_playing:
-            print(car.peresechenie(obstacles))
             # Этот цикл для последующей реализации game over экрана и начала новой игры
             screen.fill((0, 0, 0))
             for i in range(health):
@@ -68,7 +70,6 @@ if __name__ == '__main__':
                     if event.key == pygame.K_RIGHT:
                         moving_right = False
                 if event.type == event1:
-
                     list(road_blocks)[0].change_speed(1)
             # Двигаем машинку (можно попробовать реализовать через функцию update в классе Car)
             if moving_up:
@@ -80,28 +81,45 @@ if __name__ == '__main__':
             if moving_right:
                 car_group.update(car.v / fps, 0)
 
+            if car.intersection(weak_obst) is not None:
+                if RoadBlock.speed > 0:
+                    list(road_blocks)[0].change_speed(-2)
+                else:
+                    game_is_playing = False
+
+            if car.intersection(strong_obst) is not None:
+                if health > 0:
+                    health -= 1
+                else:
+                    game_is_playing = False
+
+            picked_bonus = car.intersection(bonuses)
+            if picked_bonus is not None:
+                list(road_blocks)[0].change_speed(2)
+
             # Проверяем выходит ли один из блоков за нижнюю границу экрана
             for block in road_blocks:
+                if picked_bonus in block.objects:
+                    block.objects.remove(picked_bonus)
                 if not block.is_viewing():
                     road_blocks.remove(block)
-                    RoadBlock(0, block.rect.y - 580 * 2, all_sprites, road_blocks).add_object(obstacles)
+                    RoadBlock(0, block.rect.y - 580 * 2, all_sprites, road_blocks).add_object(
+                        weak_obst, strong_obst, bonuses)
 
-            pere = car.peresechenie(obstacles)
-            if pere is not None:
-                obstacles.remove(pere)
-                list(road_blocks)[0].change_speed(-2)
-                
+            record += RoadBlock.speed / 60
             font = pygame.font.Font(None, 25)
-            screen.blit(font.render(f"Скорость: {RoadBlock.speed * 5}", 1, (255, 255, 255)), (330, 70))
+            screen.blit(font.render(f"Скорость: {RoadBlock.speed * 5} км/ч", 1, (255, 255, 255)), (330, 70))
+            screen.blit(font.render(f"Рекорд: {int(record)} м", 1, (255, 255, 255)), (330, 110))
             # Обновляем все группы спрайтов
             # Рисуем поочерёдно, чтобы одни спрайты не накладывались на другие
             road_blocks.update()
             road_blocks.draw(screen)
             for block in road_blocks:
                 block.objects.draw(screen)
-            car_group.draw(screen) 
+            car_group.draw(screen)
 
-            # Отсчитываем 1/60 секунды для стабильного fps
+            # Отсчитываем  для стабильного fps
             clock.tick(fps)
             pygame.display.flip()
+        # Нужно вынести главный цикл в отдельную функцию (напоминалка)
     pygame.quit()
