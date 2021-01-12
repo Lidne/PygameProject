@@ -20,3 +20,16 @@ def load_image(name, colorkey=None):
     else:
         image = image.convert_alpha()
     return image
+
+
+def read_record(filename, coding='utf8'):
+    with open(filename, encoding=coding, mode='r') as file:
+        record = file.read().strip()
+        if not record.isdigit():
+            return None
+    return int(record)
+
+
+def write_record(filename, record, coding='utf-8'):
+    with open(filename, encoding=coding, mode='w') as file:
+        file.write(record)
