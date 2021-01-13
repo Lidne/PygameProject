@@ -1,6 +1,7 @@
 import pygame
 from car import Car
 from road import RoadBlock
+from pause import pause
 from functions import load_image, read_record, write_record, terminate
 
 
@@ -55,6 +56,8 @@ def game_cycle(screen, car_image):
                     moving_left = True
                 if event.key == pygame.K_RIGHT:
                     moving_right = True
+                if event.key == pygame.K_ESCAPE:
+                    pause(screen, record)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     moving_up = False

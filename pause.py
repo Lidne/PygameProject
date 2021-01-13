@@ -4,7 +4,7 @@ from functions import load_image, terminate
 pygame.init()
 
 
-def pause(screen):
+def pause(screen, record):
     size = width, height = screen.get_rect().w, screen.get_rect().h
     image = load_image('pause_fon.jpg')
     intro_text = ["Пауза", "Нажмите Esc, чтобы продолжить"]
@@ -25,7 +25,7 @@ def pause(screen):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate()
+                terminate(record=record)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return
