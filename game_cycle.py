@@ -11,11 +11,12 @@ from functions import load_image, read_record, write_record, terminate
 def game_cycle(screen, car_image):
     pygame.mixer.init()
     clock = pygame.time.Clock()  # Инициализация "часов" для работы со временем
+    # Загружаем файлы со звуком
     bns = pygame.mixer.Sound('data/sounds/bonus_pick.wav')
     crash = pygame.mixer.Sound('data/sounds/hit.wav')
     start = pygame.mixer.Sound('data/sounds/start1.wav')
     motor = pygame.mixer.Sound('data/sounds/motor.wav')
-    motor.set_volume(0.3)
+    motor.set_volume(0.2)
     health = 3
     event1 = pygame.USEREVENT + 1
     pygame.time.set_timer(event1, 5000)
@@ -117,7 +118,7 @@ def game_cycle(screen, car_image):
                 RoadBlock(0, block.rect.y - 580 * 2, all_sprites, road_blocks).add_object(
                     weak_obst, strong_obst, bonuses)
 
-        distance += RoadBlock.speed / 60
+        distance += RoadBlock.speed / fps
         if distance > record:
             record = distance
 
@@ -136,5 +137,7 @@ def game_cycle(screen, car_image):
         # Отсчитываем  для стабильного fps
         clock.tick(fps)
         pygame.display.flip()
+
+    motor.stop()
     RoadBlock.speed = 3
     write_record('data/record.txt', record)
