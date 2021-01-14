@@ -30,7 +30,6 @@ class StrongObstacle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(61 + parent_rect.x, 190 + parent_rect.x)  # Генерируем случайное положение по x
         self.rect.y = random.randint(0 + parent_rect.y, 515 + parent_rect.y)  # Генерируем случайное положение по y
-        self.rect.w = 40
 
     def update(self, *args):
         self.rect = self.rect.move(0, args[0])

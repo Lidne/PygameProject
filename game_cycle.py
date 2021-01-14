@@ -12,7 +12,7 @@ def game_cycle(screen, car_image):
     clock = pygame.time.Clock()  # Инициализация "часов" для работы со временем
     health = 3
     event1 = pygame.USEREVENT + 1
-    pygame.time.set_timer(event1, 6000)
+    pygame.time.set_timer(event1, 5000)
     HP = load_image('heart.png')
 
     # Инициализируем группы спрайтов
