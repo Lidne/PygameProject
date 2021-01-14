@@ -9,7 +9,13 @@ from functions import load_image, read_record, write_record, terminate
 # а значит чтобы запустить игру заново, то надо просто вызвать функцию второй раз,
 # а не обнулять все переменные
 def game_cycle(screen, car_image):
+    pygame.mixer.init()
     clock = pygame.time.Clock()  # Инициализация "часов" для работы со временем
+    bns = pygame.mixer.Sound('data/sounds/bonus_pick.wav')
+    crash = pygame.mixer.Sound('data/sounds/hit.wav')
+    start = pygame.mixer.Sound('data/sounds/start1.wav')
+    motor = pygame.mixer.Sound('data/sounds/motor.wav')
+    motor.set_volume(0.3)
     health = 3
     event1 = pygame.USEREVENT + 1
     pygame.time.set_timer(event1, 5000)
@@ -36,7 +42,10 @@ def game_cycle(screen, car_image):
     moving_up = False
     moving_down = False
 
+    start.play(maxtime=1000)
+    motor.play(loops=-1)
     while game_is_playing:
+
         # Этот цикл для последующей реализации game over экрана и начала новой игры
         screen.fill((0, 0, 0))
         for i in range(health):
@@ -82,6 +91,7 @@ def game_cycle(screen, car_image):
         if car.intersection(weak_obst) is not None:
             if RoadBlock.speed > 1:
                 list(road_blocks)[0].change_speed(-2)
+                crash.play()
             else:
                 game_is_playing = False
 
@@ -89,12 +99,14 @@ def game_cycle(screen, car_image):
             if health > 1 and RoadBlock.speed > 1:
                 health -= 1
                 list(road_blocks)[0].change_speed(-2)
+                crash.play()
             else:
                 game_is_playing = False
 
         picked_bonus = car.intersection(bonuses)
         if picked_bonus is not None:
             list(road_blocks)[0].change_speed(2)
+            bns.play()
 
         # Проверяем выходит ли один из блоков за нижнюю границу экрана
         for block in road_blocks:

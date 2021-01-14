@@ -67,6 +67,8 @@ def start_screen(screen):
 
 
 def gameover_screen(screen):
+    pygame.mixer.init()
+    gayover = pygame.mixer.Sound('data/sounds/gameover1.wav')
     # Размеры переданного экрана
     size = width, height = screen.get_rect().w, screen.get_rect().h
     intro_text = ["Game over", "", "Игра окончена",
@@ -86,6 +88,7 @@ def gameover_screen(screen):
         intro_rect.x = width // 2 - intro_rect.w // 2
         text_coord += intro_rect.height
         image.blit(string_rendered, intro_rect)
+        gayover.play()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
