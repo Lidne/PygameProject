@@ -2,6 +2,8 @@ import pygame
 from start_screen import start_screen, gameover_screen
 from game_cycle import game_cycle
 
+# release 1.0
+
 if __name__ == '__main__':
     # Инициализация pygame
     pygame.init()
